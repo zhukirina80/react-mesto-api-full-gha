@@ -10,14 +10,14 @@ const BadRequestError = require('../errors/BadRequestError');
 
 const getUsers = (req, res, next) => {
   User.find({})
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(200).send(user))
     .catch(next);
 };
 
 const getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => new Error('NotFoundError'))
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Передан некорректный Id'));
@@ -81,7 +81,7 @@ const login = (req, res, next) => {
 const getUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => new Error('NotFoundError'))
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.message === 'NotFoundError') {
         next(new NotFoundError('Пользователь не найден'));
@@ -99,7 +99,7 @@ const updateUser = (req, res, next) => {
     { new: true, runValidators: true },
   )
     .orFail(() => new Error('NotFoundError'))
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные'));
@@ -119,7 +119,7 @@ const updateAvatar = (req, res, next) => {
     { new: true, runValidators: true },
   )
     .orFail(() => new Error('NotFoundError'))
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные'));

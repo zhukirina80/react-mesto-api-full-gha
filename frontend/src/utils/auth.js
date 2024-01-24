@@ -1,4 +1,4 @@
-const baseUrl = 'https://auth.nomoreparties.co.'
+const baseUrl = 'http://localhost:3000';
 
 function sendRequestData(url, options) {
   return fetch(url, options)
@@ -11,7 +11,7 @@ function sendRequestData(url, options) {
 }
 
 export function register(email, password) {
-  return sendRequestData(`${baseUrl}/signup`, {
+  return sendRequestData(`${baseUrl}/sign-up`, {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
@@ -22,7 +22,7 @@ export function register(email, password) {
 }
 
 export function authorize(email, password) {
-  return sendRequestData(`${baseUrl}/signin`, {
+  return sendRequestData(`${baseUrl}/sign-in`, {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
@@ -32,7 +32,8 @@ export function authorize(email, password) {
   })
 }
 
-export function checkToken(token) {
+export function checkToken() {
+  const token = localStorage.getItem('jwt');
   return sendRequestData(`${baseUrl}/users/me`, {
     method: 'GET',
     headers: {
