@@ -1,11 +1,17 @@
 class Api {
-  constructor({ baseUrl, headers }) {
+  constructor({ baseUrl }) {
     this._baseUrl = baseUrl;
-    this._headers = headers;
   }
 
-  _sendRequest(url, options) {
-    return fetch(url, options)
+  loadUserInfo() {
+    const token = localStorage.getItem('jwt');
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    })
     .then((res) => {
       if(res.ok) {
         return res.json()
@@ -14,76 +20,125 @@ class Api {
     })
   }
 
-  loadUserInfo() {
-    return this._sendRequest(`${this._baseUrl}/users/me`, {
-      method: 'GET',
-      headers: this._headers
-    })
-  }
-
   patchUserInfo({ name, about, avatar, _id }) {
-    return this._sendRequest(`${this._baseUrl}/users/me`, {
+    const token = localStorage.getItem('jwt');
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
-        name: name,
-        about: about,
-        avatar: avatar,
-        _id: _id
+        name,
+        about,
+        avatar,
+        _id,
       })
+    })
+    .then((res) => {
+      if(res.ok) {
+        return res.json()
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
   }
 
   getInitialCards() {
-    return this._sendRequest(`${this._baseUrl}/cards`, {
+    const token = localStorage.getItem('jwt');
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'GET',
-      headers: this._headers
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    })
+    .then((res) => {
+      if(res.ok) {
+        return res.json()
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
   }
 
   addCard({ name, link }) {
-    return this._sendRequest(`${this._baseUrl}/cards`, {
+    const token = localStorage.getItem('jwt');
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
-        name: name,
-        link: link
+        name,
+        link,
       })
+    })
+    .then((res) => {
+      if(res.ok) {
+        return res.json()
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
   }
 
   changeLikeCardStatus(cardId, like) {
-    return this._sendRequest(`${this._baseUrl}/cards/${cardId}/likes`, {
+    const token = localStorage.getItem('jwt');
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: like ? 'PUT' : 'DELETE',
-      headers: this._headers
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    })
+    .then((res) => {
+      if(res.ok) {
+        return res.json()
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
   }
 
   deleteCard(cardId) {
-    return this._sendRequest(`${this._baseUrl}/cards/${cardId}`, {
+    const token = localStorage.getItem('jwt');
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    })
+    .then((res) => {
+      if(res.ok) {
+        return res.json()
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
   }
 
-  patchAvatar(data) {
-    return this._sendRequest(`${this._baseUrl}/users/me/avatar`, {
+  patchAvatar({ avatar }) {
+    const token = localStorage.getItem('jwt');
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
-        avatar: data.avatar
+        avatar,
       })
+    })
+    .then((res) => {
+      if(res.ok) {
+        return res.json()
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
   }
 }
-const token = localStorage.getItem('jwt');
 
 const api = new Api({
   baseUrl: 'http://localhost:3000',
-  headers: {
-    authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  }
+  //baseUrl: 'https://api.zhukirina.nomoredomainsmonster.ru',
 })
 
 export default api;

@@ -5,12 +5,12 @@
   
 Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
 
-Адрес репозитория: https://github.com/...
+Адрес репозитория: https://github.com/zhukirina80/react-mesto-api-full-gha
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 158.160.54.223
 
-Frontend https://...
+Frontend zhukirina.nomoredomainsmonster.ru
 
-Backend https://...
+Backend api.zhukirina.nomoredomainsmonster.ru

@@ -32,14 +32,42 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   
-  const handleRequestUserInfo = () => {
-    api.loadUserInfo()
-      .then((currentUser) => {
-        setCurrentUser(currentUser);
-      })
-      .catch(console.error)
-  } 
+  // const handleRequestUserInfo = () => {
+  //   api.loadUserInfo()
+  //     .then((currentUser) => {
+  //       setCurrentUser(currentUser);
+  //     })
+  //     .catch(console.error)
+  // } 
   
+  
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      api.loadUserInfo()
+        .then((currentUser) => {
+          setCurrentUser(currentUser);
+          handleRequestCards(); 
+        })
+        .catch(console.error)
+    }
+  }, [loggedIn]);
+
+    useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      checkToken(token)
+        .then((res) => {
+          setUserEmail(res.email)
+          setLoggedIn(true)
+          navigate('/')
+        })
+        .catch(console.err)
+    } else {
+      setLoggedIn(false)
+    }
+  }, [])
+
   const handleRequestCards = () => {
     api.getInitialCards(currentUser._id)
       .then((data) => {
@@ -47,13 +75,6 @@ function App() {
       })
       .catch(console.error)
   }
-
-  useEffect(() => {
-    if (loggedIn) {
-      handleRequestUserInfo();
-      handleRequestCards();
-    }
-  }, [loggedIn]) 
      
   function handleCardLike(card) {
     // проверяем, есть ли уже лайк на этой карточке
@@ -110,8 +131,8 @@ function App() {
   function handleUpdateUser({ name, about }) {
     function makeRequest() {
       return api.patchUserInfo({
-        name: name,
-        about: about,
+        name,
+        about,
       })
       .then(setCurrentUser);
     }
@@ -139,20 +160,6 @@ function App() {
     }
     handleSubmit(makeRequest);
   }
-
-  useEffect(() => {
-    if (localStorage.jwt) {
-      checkToken(localStorage.jwt)
-        .then((res) => {
-          setUserEmail(res.email)
-          setLoggedIn(true)
-          navigate('/')
-        })
-        .catch(console.err)
-    } else {
-      setLoggedIn(false)
-    }
-  }, [])
 
   function handleLogin({ email, password }) {
     authorize(email, password)
