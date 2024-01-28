@@ -18,7 +18,7 @@ import { register, authorize, checkToken } from '../utils/auth';
 
 
 function App() {
-
+  
   const navigate = useNavigate();
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -39,34 +39,6 @@ function App() {
   //     })
   //     .catch(console.error)
   // } 
-  
-  
-  useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      api.loadUserInfo()
-        .then((currentUser) => {
-          setCurrentUser(currentUser);
-          handleRequestCards(); 
-        })
-        .catch(console.error)
-    }
-  }, [loggedIn]);
-
-    useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      checkToken(token)
-        .then((res) => {
-          setUserEmail(res.email)
-          setLoggedIn(true)
-          navigate('/')
-        })
-        .catch(console.err)
-    } else {
-      setLoggedIn(false)
-    }
-  }, [])
 
   const handleRequestCards = () => {
     api.getInitialCards(currentUser._id)
@@ -75,7 +47,52 @@ function App() {
       })
       .catch(console.error)
   }
-     
+  
+  // useEffect(() => {
+  //   const token = localStorage.getItem('jwt');
+  //   if (token) {
+  //     handleRequestUserInfo();
+  //     handleRequestCards();
+  //   }
+  // }, [loggedIn]) 
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      checkToken(token)
+        .then((currentUser) => {
+          setCurrentUser(currentUser);
+          setUserEmail(currentUser.email);
+          setLoggedIn(true);
+          navigate('/');
+        })
+        .catch((err) => {
+          localStorage.removeItem('jwt');
+          console.log(err);
+        })
+    } else {
+      setLoggedIn(false)
+    }
+  }, [])
+  
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      api.loadUserInfo()
+        .then((currentUser) => {
+          setCurrentUser(currentUser);
+          setLoggedIn(true);
+          handleRequestCards(); 
+        })
+        .catch((error) => {
+          setLoggedIn(false);
+          console.log(error);
+        })
+    } else {
+      setLoggedIn(false)
+    }
+  }, [loggedIn]);
+
   function handleCardLike(card) {
     // проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some(id => id === currentUser._id);
@@ -166,6 +183,7 @@ function App() {
       .then((res) => {
         localStorage.setItem('jwt', res.token)
         setLoggedIn(true)
+        setCurrentUser(currentUser)
         navigate('/')
       })
       .catch((err) => {
@@ -178,16 +196,23 @@ function App() {
   function handleRegister({ email, password }) {
     register(email, password)
       .then(() => {
-        setisInfoPopupOpen(true)
-        setIsSuccess(true)
-        navigate('/sign-in')
+        setisInfoPopupOpen(true);
+        setIsSuccess(true);
+        navigate('/sign-in');
       })
       .catch((err) => {
-        setisInfoPopupOpen(true)
-        setIsSuccess(false)
-        console.error(`Ошибка при регистрации ${err}`)
+        setisInfoPopupOpen(true);
+        setIsSuccess(false);
+        console.error(`Ошибка при регистрации ${err}`);
       })
   }
+
+  // function onSignOut() {
+  //   localStorage.removeItem('jwt');
+  //   console.log(111)
+  //   setLoggedIn(false);
+  //   //navigate('/sign-in');
+  // }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -208,13 +233,13 @@ function App() {
             }/>
             <Route path='/sign-in' element={
               <>
-                <Header name="signin"/>
+                <Header name="signin" />
                 <Login onLogin={handleLogin} />
               </>
             }/>
             <Route path='/sign-up' element={
               <>
-                <Header name="signup"/>
+                <Header name="signup" />
                 <Register onRegister={handleRegister} />
               </>
             }/>
