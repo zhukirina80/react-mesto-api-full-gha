@@ -11,6 +11,7 @@ function Register({ onRegister }) {
     e.preventDefault();
     
     onRegister({ email: values.email, password: values.password });
+    setValues({ email: '', password: '' });
   }
 
   useEffect(() => {

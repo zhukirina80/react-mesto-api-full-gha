@@ -2,19 +2,20 @@ import SectionSign from "./SectionSign";
 import useForm from "../hooks/useForm";
 import { useEffect } from "react";
 
-function Login({ onLogin }) {
 
+function Login({ onLogin }) {
   const { values, handleChange, setValues } = useForm({ email: '', password: '' });
 
   function handleSubmit(e) {
     e.preventDefault();
-    
     onLogin({ email: values.email, password: values.password });
+
+    setValues({ email: '', password: '' });
   }
 
   useEffect(() => {
-      setValues({ email: '', password: '' });
-    }, [setValues]);
+    setValues({ email: '', password: '' });
+  }, [setValues]);
 
   return (
     <SectionSign 
