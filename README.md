@@ -9,8 +9,8 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.54.223
+IP 158.160.54.223
 
-Frontend zhukirina.nomoredomainsmonster.ru
+Frontend https://zhukirina.nomoredomainsmonster.ru
 
-Backend api.zhukirina.nomoredomainsmonster.ru
+Backend https://api.zhukirina.nomoredomainsmonster.ru
