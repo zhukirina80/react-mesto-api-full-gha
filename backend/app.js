@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
@@ -12,7 +13,7 @@ const {
   createUser, login,
 } = require('./controllers/users');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 const app = express();
 app.use(cors());
 app.use(helmet());
@@ -20,6 +21,12 @@ app.use(helmet());
 app.use(express.json());
 
 app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/sign-in', validationUser, login);
 app.post('/sign-up', validationUser, createUser);
@@ -34,7 +41,7 @@ app.use(errors());
 
 app.use(serverError);
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
+mongoose.connect(DB_URL);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console

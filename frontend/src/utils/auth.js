@@ -1,5 +1,5 @@
-const baseUrl = 'http://localhost:3000';
-//const baseUrl = 'https://api.zhukirina.nomoredomainsmonster.ru';
+//const baseUrl = 'http://localhost:3000';
+const baseUrl = 'https://api.zhukirina.nomoredomainsmonster.ru';
 
 function sendRequestData(url, options) {
   return fetch(url, options)
