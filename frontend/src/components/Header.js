@@ -6,7 +6,7 @@ function Header({ name, userEmail }) {
   
   function onSignOut() {
     localStorage.removeItem('jwt');
-    navigate('/sign-in');
+    navigate('/signin');
   }
 
   return (
@@ -18,7 +18,7 @@ function Header({ name, userEmail }) {
           <button className="header__link-out" onClick={onSignOut}>Выйти</button>
         </div>
       :
-      <Link to={name === 'signup' ? '/sign-in' : '/sign-up'} className="header__link">
+      <Link to={name === 'signup' ? '/signin' : '/signup'} className="header__link">
       {name === 'signup' ? 'Войти' : 'Регистрация'}</Link> 
       }
     </header>

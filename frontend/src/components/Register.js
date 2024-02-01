@@ -29,7 +29,7 @@ function Register({ onRegister }) {
         <span className="popup__error"/>
         <button type="submit" className="login-register__button login-register__button_type_signup">Зарегистрироваться</button>
         <p className="login-register__subtitle">Уже зарегистрированы? 
-          <Link to={`/sign-in`} className="login-register__signup-link"> Войти</Link>
+          <Link to={`/signin`} className="login-register__signup-link"> Войти</Link>
         </p>
     </SectionSign>
   );

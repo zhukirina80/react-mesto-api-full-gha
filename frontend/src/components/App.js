@@ -173,7 +173,7 @@ function App() {
       .then(() => {
         setisInfoPopupOpen(true);
         setIsSuccess(true);
-        navigate('/sign-in');
+        navigate('/signin');
       })
       .catch((err) => {
         setisInfoPopupOpen(true);
@@ -199,13 +199,13 @@ function App() {
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete} />
             }/>
-            <Route path='/sign-in' element={
+            <Route path='/signin' element={
               <>
                 <Header name="signin"/>
                 <Login onLogin={handleLogin} />
               </>
             }/>
-            <Route path='/sign-up' element={
+            <Route path='/signup' element={
               <>
                 <Header name="signup"/>
                 <Register onRegister={handleRegister} />

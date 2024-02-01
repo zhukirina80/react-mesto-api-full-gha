@@ -12,7 +12,7 @@ function sendRequestData(url, options) {
 }
 
 export function register(email, password) {
-  return sendRequestData(`${baseUrl}/sign-up`, {
+  return sendRequestData(`${baseUrl}/signup`, {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
@@ -23,7 +23,7 @@ export function register(email, password) {
 }
 
 export function authorize(email, password) {
-  return sendRequestData(`${baseUrl}/sign-in`, {
+  return sendRequestData(`${baseUrl}/signin`, {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
